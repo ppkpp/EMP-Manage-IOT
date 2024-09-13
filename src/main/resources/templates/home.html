@@ -1,0 +1,37 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="wrapper d-flex align-items-stretch">
+     <div th:replace="fragments/sidenav :: sidenav"></div>
+
+    <!-- Page Content -->
+    <div id="content" class="p-4 p-md-5">
+        <div th:replace="fragments/toolbar :: toolbar"></div>
+       <div></div>
+            <!-- Content will be replaced by child pages -->
+                  <div sec:authorize="isAuthenticated()">Text visible only to authenticated users.</div>
+                  <div sec:authorize="hasRole('ROLE_ROLE_USER')">Text visible to user.</div>
+                   <div sec:authorize="hasRole('ROLE_ROLE_ADMIN')">Text visible to ADMIN.</div>
+                 
+        <br/>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/popper.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="wrapper d-flex align-items-stretch">
+     <div th:replace="fragments/sidenav :: sidenav"></div>
+
+    <!-- Page Content -->
+    <div id="content" class="p-4 p-md-5">
+        <div th:replace="fragments/toolbar :: toolbar"></div>
+        <table class="table table-responsive table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Profile</th>
+                    <th>Name</th>
+                   <!-- <th>First Name</th>
+                    <th>Last Name</th>-->
+                    <th>Phone No</th>
+                    <th>Date of Birth</th>
+                    <th>Gender</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Position</th>
+                    <th>Hire Date</th>
+                    <th>Department</th>
+                    <th>Salary</th>
+                    <!--<th>Status</th>
+                    <th>RFID</th>-->
+                     <th sec:authorize="hasRole('ROLE_ROLE_MANAGER')">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="employee : ${employees}">
+                    <td th:text="${employee.id}">1</td>
+                    <td><img class="img-fluid img-thumbnail rounded-circle"  th:src="${employee.imageUrl}" alt="Image" id="profile-img"/></td>
+                    <td th:text="${employee.name}">John</td>
+                    <td th:text="${employee.phone}">09123456789</td>
+                    <!--<td th:text="${employee.lastname}">Doe</td>
+                    <td th:text="${employee.phone}">John</td>-->
+                    <td th:text="${employee.dob}">1990-01-01</td>
+                    <td th:text="${employee.gender}">Male</td>
+                    <td th:text="${employee.email}">john.doe@example.com</td>
+                    <td th:text="${employee.address}">123 Main St</td>
+                    <td th:text="${employee.position}">Developer</td>
+                    <td th:text="${employee.hiredate}">2020-01-01</td>
+                    <td th:text="${employee.department}">IT</td>
+                    <td th:text="${employee.salary}">$100,000</td>
+                    <!--<td th:text="${employee.status}">Active</td>
+                    <td th:text="${employee.rfid}">123456789</td>-->
+                    <td sec:authorize="hasAnyRole( 'ROLE_ROLE_MANAGER')">
+                        <a th:href="@{'/edit_emp/' + ${employee.id}}" class="btn btn-sm btn-primary">Edit</a> <!-- Edit link -->
+                    </td>
+                     <td sec:authorize="hasAnyRole('ROLE_ROLE_ADMIN', 'ROLE_ROLE_MANAGER')">
+                        <a th:href="@{'/employee_detail/' + ${employee.id}}" class="btn btn-sm btn-secondary">Payroll</a> <!-- Edit link -->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+       
+        <!-- Pagination links -->
+        <nav aria-label="Page navigation example" th:if="${employees.totalPages > 1}">
+            <ul class="pagination">
+                <li class="page-item" th:class="${employees.number == 0} ? 'disabled' : ''">
+                    <a class="page-link" th:href="@{'/employee?page=' + ${employees.number - 1}}">Previous</a>
+                </li>
+                <li class="page-item" th:each="i : ${#numbers.sequence(0, employees.totalPages - 1)}">
+                    <a class="page-link" th:href="@{'/employee?page=' + ${i}}" th:text="${i + 1}"></a>
+                </li>
+                <li class="page-item" th:class="${employees.number + 1 >= employees.totalPages} ? 'disabled' : ''">
+                    <a class="page-link" th:href="@{'/employee?page=' + ${employees.number + 1}}">Next</a>
+                </li>
+            </ul>
+        </nav>
+            <!-- Content will be replaced by child pages -->
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/popper.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

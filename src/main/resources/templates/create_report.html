@@ -1,0 +1,59 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Report</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="wrapper d-flex align-items-stretch">
+     <div th:replace="fragments/sidenav :: sidenav"></div>
+
+    <!-- Page Content -->
+    <div id="content" class="p-4 p-md-5">
+        <div th:replace="fragments/toolbar :: toolbar"></div>
+        <div class="d-flex justify-content-between mb-3">
+            <a href="/report" class="btn btn-secondary">Back</a>
+        </div>
+                <form th:action="@{/save_report}" th:object="${report}" method="post">
+        <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" class="form-control" id="title" th:field="*{title}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea class="form-control" id="description" th:field="*{description}" rows="4" required></textarea>
+        </div>
+
+         <div class="form-group">
+            <label for="reporttype">Report Type:</label>
+            <select class="form-control" id="reporttype" th:field="*{reporttype}" required>
+                <option value="">Select Report Type</option>
+                <option value="Leave">Leave</option>
+                <option value="Task">Task</option>
+                <option value="Resign">Resign</option>
+            </select>
+        </div>
+
+        <!-- You can add more fields as needed -->
+
+        <button type="submit" class="btn btn-primary">Create Report</button>
+    </form>
+            <!-- Content will be replaced by child pages -->
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/popper.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

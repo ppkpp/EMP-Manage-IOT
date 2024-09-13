@@ -1,0 +1,103 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reports</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+   
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="wrapper d-flex align-items-stretch">
+     <div th:replace="fragments/sidenav :: sidenav"></div>
+   
+    <!-- Page Content -->
+    <div id="content" class="p-4 p-md-5">
+        <div th:replace="fragments/toolbar :: toolbar"></div>
+         <h6 class="mb-0" th:text="${status} +' Reports'"></h6>
+         <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th> TITLE</th>
+                    <th>DESCRIPTION</th>
+                    <th> Name</th>
+                    <th>POSITION</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Type</th>
+                     <th  sec:authorize="hasRole('ROLE_ROLE_MANAGER')">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="report : ${reports}">
+                    <td th:text="${report.id}"></td>
+                    <td th:text="${report.title}"></td>
+                     <td th:text="${report.description}"></td>
+                    <td th:text="${report.employee.name}"></td>
+                    <td th:text="${report.employee.position}"></td>
+                    <td th:text="${report.createDate}"></td>
+                    <td th:text="${report.createTime}"></td>
+                     <td >
+                        <span class="badge badge-warning" th:if="${report.reporttype == 'Leave'}" th:text="${report.reporttype}"></span>
+                         <span class="badge badge-info" th:if="${report.reporttype == 'Task'}" th:text="${report.reporttype}"></span>
+                          <span class="badge badge-danger" th:if="${report.reporttype == 'Resign'}" th:text="${report.reporttype}"></span>
+                     </td>
+                    
+                     <td th:text="${report.status}"></td>
+                      <td>
+                    <div class="row" sec:authorize="hasRole('ROLE_ROLE_MANAGER')">
+    <!-- Confirm Button -->
+    <div class="col" th:if="${report.status != 'CONFIRM'}">
+        <form th:action="@{/report/confirm/{id}(id=${report.id})}" method="post">
+            <button type="submit" class="btn btn-success btn-icon mr-2">
+                <i class="fas fa-check-circle"></i> <!-- Font Awesome icon for check -->
+            </button>
+        </form>
+    </div>
+
+    <!-- Reject Button -->
+    <div class="col" th:if="${report.status != 'REJECT'}">
+        <form th:action="@{/report/reject/{id}(id=${report.id})}" method="post">
+            <button type="submit" class="btn btn-danger btn-icon mr-2">
+                <i class="fas fa-times-circle"></i> <!-- Font Awesome icon for times -->
+            </button>
+        </form>
+    </div>
+
+    <!-- Pending Button -->
+    <div class="col" th:if="${report.status != 'PENDING'}">
+        <form th:action="@{/report/pending/{id}(id=${report.id})}" method="post">
+            <button type="submit" class="btn btn-warning btn-icon">
+                <i class="fas fa-clock"></i> <!-- Font Awesome icon for pending -->
+            </button>
+        </form>
+    </div>
+</div>
+
+</div>
+
+            </td>
+                </tr>
+            </tbody>
+        </table>
+         <!-- Pagination links -->
+   
+            <!-- Content will be replaced by child pages -->
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/popper.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

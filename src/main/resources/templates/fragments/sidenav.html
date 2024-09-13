@@ -1,0 +1,40 @@
+ <nav id="sidebar" th:fragment="sidenav">
+        <div class="p-4 pt-5">
+          <a href="#" class="img logo rounded-circle mb-5" style="background-image: url('/images/photologo.png');"></a>
+
+            <ul class="list-unstyled components mb-5">
+                <li class="active">
+                    <a th:href="@{/}">Home</a>
+                </li>
+                <li sec:authorize="hasAnyRole('ROLE_ROLE_ADMIN', 'ROLE_ROLE_MANAGER')">
+                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" >Employee</a>
+                    <ul class="collapse list-unstyled" id="homeSubmenu">
+                        <li><a th:href="@{/create_emp}"  sec:authorize="hasAnyRole('ROLE_ROLE_MANAGER')">Create Employee</a></li>
+                        <li><a th:href="@{/employee}">List</a></li>
+                    
+                    </ul>
+                </li>
+                <li ><a sec:authorize="hasAnyRole('ROLE_ROLE_ADMIN', 'ROLE_ROLE_MANAGER')" th:href="@{/attendent}">Attendance</a></li>
+              
+                <li ><a  sec:authorize="hasAnyRole('ROLE_ROLE_USER')" th:href="@{/attendent_profile}">Attendance</a></li>
+                
+                <li >
+                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Report</a>
+                    <ul class="collapse list-unstyled" id="pageSubmenu">
+                        <li><a th:href="@{'/create_report'}" >Create Report</a></li>
+                        <li><a th:href="@{'/report?status=PENDING'}" sec:authorize="hasAnyRole('ROLE_ROLE_ADMIN', 'ROLE_ROLE_MANAGER')" >Pending</a></li>
+                        <li><a th:href="@{'/report?status=CONFIRM'}" sec:authorize="hasAnyRole('ROLE_ROLE_ADMIN', 'ROLE_ROLE_MANAGER')" >Confirm</a></li>
+                        <li><a th:href="@{'/report?status=REJECT'}" sec:authorize="hasAnyRole('ROLE_ROLE_ADMIN', 'ROLE_ROLE_MANAGER')" >Reject</a></li>
+                         <li><a th:href="@{'/report_profile?status=PENDING'}" sec:authorize="hasAnyRole('ROLE_ROLE_USER')" >Pending</a></li>
+                        <li><a th:href="@{'/report_profile?status=CONFIRM'}" sec:authorize="hasAnyRole('ROLE_ROLE_USER')" >Confirm</a></li>
+                        <li><a th:href="@{'/report_profile?status=REJECT'}" sec:authorize="hasAnyRole('ROLE_ROLE_USER')" >Reject</a></li>
+                    </ul>
+                </li>
+                  <li ><a  sec:authorize="hasAnyRole('ROLE_ROLE_USER')" th:href="@{/my_profile}">Profile</a></li>
+                <li><a th:href="@{'/logout'}">Logout</a></li>
+            </ul>
+            <div class="footer">
+                <p>@Employee Management</p>
+            </div>
+        </div>
+    </nav>
