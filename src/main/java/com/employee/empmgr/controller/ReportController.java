@@ -25,6 +25,7 @@ import com.employee.empmgr.model.Role;
 import com.employee.empmgr.repository.EmployeeRepository;
 import com.employee.empmgr.repository.ReportRepository;
 import com.employee.empmgr.repository.RoleRepository;
+import com.employee.empmgr.services.ManageLogService;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -45,7 +46,9 @@ import java.util.UUID;
 
 @Controller
 public class ReportController {
-
+     @Autowired
+    private ManageLogService manageLogService;
+    
     @Autowired
     private ReportRepository reportRepository;
 
@@ -57,7 +60,7 @@ public class ReportController {
     public String updateReportStatus(@PathVariable String status, @PathVariable Long id) {
         Report report = reportRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Report not found with id: " + id));
-
+        
         if ("confirm".equalsIgnoreCase(status)) {
             report.setStatus("CONFIRM");
         } else if ("reject".equalsIgnoreCase(status)) {
@@ -67,7 +70,8 @@ public class ReportController {
         } else {
             throw new IllegalArgumentException("Invalid status provided: " + status);
         }
-
+        manageLogService.logManagerAction(SecurityContextHolder.getContext().getAuthentication(),
+                "Report : " + report.getEmployee().getName() +" Status: "+ status);
         reportRepository.save(report);
         return "redirect:/report"; // Redirect back to report list
     }

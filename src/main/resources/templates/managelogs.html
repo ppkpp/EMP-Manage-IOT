@@ -1,0 +1,64 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Attendance </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="wrapper d-flex align-items-stretch">
+     <div th:replace="fragments/sidenav :: sidenav"></div>
+
+    <!-- Page Content -->
+    <div id="content" class="p-4 p-md-5">
+        <div th:replace="fragments/toolbar :: toolbar"></div>
+         <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th> Name</th>
+                    <th>Position</th>
+                    <th>Action</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="managelog : ${managelogs}">
+                    <td th:text="${managelog.id}"></td>
+                    <td th:text="${managelog.username}"></td>
+                    <td th:text="${managelog.position}"></td>
+                    <td th:text="${managelog.actions}"></td>
+                    <td th:text="${managelog.createDate}"></td>
+                    <td th:text="${managelog.createTime}"></td>
+                    
+                </tr>
+            </tbody>
+        </table>
+         <!-- Pagination links -->
+        <nav aria-label="Page navigation example" th:if="${managelogs.totalPages > 1}">
+  <ul class="pagination" th:if="${managelogs.totalPages > 1}">
+    <li class="page-item" th:class="${managelogs.number == 0} ? 'disabled' : ''"> <a class="page-link" th:href="@{'/managelogs?page=' + ${managelogs.number - 1}}">Previous</a></li>
+    <li class="page-item" th:each="i : ${#numbers.sequence(0, managelogs.totalPages - 1)}">
+        <a class="page-link" th:href="@{'/managelogs?page=' + ${i}}" th:text="${i + 1}"></a></li>
+    
+    <li class="page-item"><a class="page-link" th:href="@{'/managelogs?page=' + ${managelogs.number + 1}}">Next</a></li>
+  </ul>
+</nav>
+            <!-- Content will be replaced by child pages -->
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/popper.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

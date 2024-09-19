@@ -17,7 +17,7 @@
                 <li ><a sec:authorize="hasAnyRole('ROLE_ROLE_ADMIN', 'ROLE_ROLE_MANAGER')" th:href="@{/attendent}">Attendance</a></li>
               
                 <li ><a  sec:authorize="hasAnyRole('ROLE_ROLE_USER')" th:href="@{/attendent_profile}">Attendance</a></li>
-                
+                 <li ><a sec:authorize="hasAnyRole('ROLE_ROLE_ADMIN')" th:href="@{/managelogs}">Manager Log</a></li>
                 <li >
                     <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Report</a>
                     <ul class="collapse list-unstyled" id="pageSubmenu">

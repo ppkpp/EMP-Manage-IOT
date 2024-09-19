@@ -24,6 +24,7 @@ import com.employee.empmgr.model.Role;
 import com.employee.empmgr.repository.EmployeeRepository;
 import com.employee.empmgr.repository.RoleRepository;
 import com.employee.empmgr.services.AttendentService;
+import com.employee.empmgr.services.ManageLogService;
 import com.employee.empmgr.repository.AttendentRepository;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.security.access.annotation.Secured;
@@ -45,7 +46,7 @@ import java.util.UUID;
 import java.time.YearMonth;
 @Controller
 public class EmployeeController {
-
+    
     @Autowired
     private EmployeeRepository employeeRepository;
 
@@ -59,6 +60,10 @@ public class EmployeeController {
 
     @Autowired
     private AttendentRepository attendentRepository;
+
+
+    @Autowired
+    private ManageLogService manageLogService;
 
     @Autowired
     private AttendentService attendentService;
@@ -77,15 +82,10 @@ public class EmployeeController {
     public String listEmployees(@RequestParam(defaultValue = "0") int page, 
                                @RequestParam(defaultValue = "10") int size,
                                Model model) {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            System.out.println(authentication.getName());
-            String role = "";
-            for (GrantedAuthority authority : authentication.getAuthorities()) {
-            role = authority.getAuthority();
-            }
-            System.out.println("******************");
-            System.out.println(role);
 
+    //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            
+       // manageLogService.logManagerAction(SecurityContextHolder.getContext().getAuthentication(),"List User");
         Page<Employee> employees = employeeRepository.findAll(PageRequest.of(page, size));
         
         model.addAttribute("employees", employees);
@@ -138,6 +138,8 @@ public class EmployeeController {
         }
 
         employeeRepository.save(employee);
+        manageLogService.logManagerAction(SecurityContextHolder.getContext().getAuthentication(),
+                "Created New Employee "+ employee.getName()+" and position "+employee.getPosition());
         return "redirect:/employee";
     }
 
@@ -186,7 +188,8 @@ public class EmployeeController {
             Files.write(filePath, file.getBytes());
             existingEmployee.setImageUrl("/uploads/" + uuidFileName);
         }
-
+        manageLogService.logManagerAction(SecurityContextHolder.getContext().getAuthentication(),
+                "Updated Employee " + updatedEmployee.getName() + " and position " + updatedEmployee.getPosition());
         employeeRepository.save(existingEmployee); // Save or update employee
         return "redirect:/employee"; // Redirect to the employee list page after update
     }
