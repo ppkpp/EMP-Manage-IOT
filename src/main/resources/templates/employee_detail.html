@@ -39,7 +39,8 @@
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex flex-column align-items-center text-center">
-                    <img th:src="${employee.imageUrl}" alt="Admin" class="rounded-circle" width="150">
+                    {% comment %} <img th:src="${employee.imageUrl}" alt="Admin" class="rounded-circle" width="150"> {% endcomment %}
+                    <img th:src="${#strings.replace(employee.imageUrl, '/employee_detail', '')}" alt="Admin" class="rounded-circle" width="150">
                     <div class="mt-3">
                       <h4 ><span th:text="${employee.name}"></span></h4>
                       <p class="text-secondary mb-1"><span th:text="${employee.position}"></span></p>
